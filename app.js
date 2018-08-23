@@ -2,12 +2,15 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
 import CircularJSON from 'circular-json';
+import dotenv from 'dotenv';
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+dotenv.config();
 
 app.post('/api', (req, res) => {
   const data = req.body;
