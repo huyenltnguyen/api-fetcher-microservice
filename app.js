@@ -1,8 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import axios from 'axios';
-import CircularJSON from 'circular-json';
 import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 
 const PORT = process.env.PORT || 3000;
 
@@ -26,18 +25,14 @@ app.post('/api', (req, res) => {
     res.json({ message: 'App not found.' });
   }
 
-  axios.get(apiUrl)
-    .then((d) => {
-      // Use circular-json package to resolve
-      // the 'Converting circular structure to JSON' error
-      const json = CircularJSON.stringify(d);
-      res.json({
-        message: 'Data successfully fetched',
-        data: json,
-      });
-    })
+  fetch(apiUrl)
+    .then(resp => resp.json())
+    .then(json => res.json({
+      message: 'Data successfully fetched',
+      data: json,
+    }))
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       res.json({ message: 'Something went wrong.' });
     });
 });
